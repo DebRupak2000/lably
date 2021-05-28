@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.xfactor.lably.entity.Lab;
+import com.xfactor.lably.entity.Test;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/test")
 public class TestController {
 
-    ArrayList<Lab> labs = new ArrayList<>();
+    ArrayList<Test> tests = new ArrayList<>();
 
     // @RequestMapping(method = RequestMethod.GET)
     @GetMapping
@@ -52,18 +52,25 @@ public class TestController {
         return arrayList;
     }
 
-    @GetMapping("/getLabs")
-    public ArrayList<Lab> getLabs() {
-        return labs;
+    @PostMapping("/addTest")
+    public Test addTest(@RequestBody Test test) {
+        tests.add(test);
+        return test;
     }
 
-    @PostMapping("/addLab")
-    public Lab addLab(@RequestBody Lab lab) {
-        String name = lab.getName();
-        name = "Hello " + name;
-        lab.setName(name);
-        labs.add(lab);
-        return lab;
+    @GetMapping("/getAllTests")
+    public ArrayList<Test> getTests() {
+        return tests;
+    }
+
+    @GetMapping("/getTestByName")
+    public Test getTestByName(@RequestParam String testname){
+        Test resTest = null;
+        for(Test test : tests){
+            if(test.getName().equalsIgnoreCase(testname))
+                resTest = test;
+        }
+        return resTest;
     }
 
     // // http://localhost:8080/test/hello/xfactor
@@ -84,5 +91,6 @@ public class TestController {
     // Employee newEmployee(@RequestBody Employee newEmployee) {
     // return repository.save(newEmployee);
     // }
+    
 
 }
